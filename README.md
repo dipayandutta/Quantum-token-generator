@@ -1,4 +1,4 @@
-# ⚛️ Adaptive Quantum-Triggered Secret Rotation
+# Adaptive Quantum-Triggered Secret Rotation
 
 > **Conditional quantum entropy for active attack mitigation** — quantum randomness invoked *only when under attack*, not continuously.
 
@@ -16,7 +16,7 @@ No human intervention. No SOC delay. No wasted quantum cycles.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                  Normal Operation                        │
+│                  Normal Operation                       │
 │   Client ──Bearer Token──▶ protected_server_2.py
 └─────────────────────────────────────────────────────────┘
                          │
