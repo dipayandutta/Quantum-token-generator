@@ -1,0 +1,104 @@
+https://qrng.anu.edu.au/API/jsonI.php?length=1&type=uint8
+
+- anu.edu.au — Australian National University's domain
+- qrng — Quantum Random Number Generator subdomain
+- This is a physical machine at ANU in Canberra, Australia connected to a real quantum optics experiment
+
+
+/API/jsonI.php
+
+- A PHP script that reads from the quantum hardware and returns the result as JSON
+- Every time you hit this endpoint, it triggers a fresh measurement from the physical device
+
+
+
+What it Returns
+===============
+
+{
+  "type": "uint8",
+  "length": 1,
+  "data": [174],
+  "success": true
+}
+```
+
+- `data` — array of random numbers, one per `length`
+- `174` — a genuinely quantum-random number between 0 and 255
+- `success: true` — measurement succeeded
+
+---
+
+### What `uint8` Means
+
+An unsigned 8-bit integer holds exactly **8 bits** of information:
+```
+174  in decimal
+=  10101110  in binary
+```
+
+8 bits. One byte. Values from 0 to 255.
+
+So `length=32&type=uint8` gives you 32 numbers × 8 bits each = **256 bits of quantum randomness** — which is exactly what your token needs.
+
+---
+
+### Other Type Options
+
+The API supports three types:
+```
+type=uint8    →  0 to 255          (8 bits per number)
+type=uint16   →  0 to 65535        (16 bits per number)
+type=hex16    →  0000 to ffff      (hex string, 16 bits)
+
+
+
+=============
+FLOWCHART
+============
+
+data = [174, 23, 201, ...]   # list of integers
+bytes(data)                   # → b'\xae\x17\xc9...'
+```
+
+---
+
+### The Full Journey When You Call It
+```
+Your Python code
+     ↓
+HTTP GET to qrng.anu.edu.au
+     ↓
+ANU server receives request
+     ↓
+Reads fresh measurement from quantum optics lab
+     ↓  ← THIS is where real physics happens
+         A laser splits photons
+         Vacuum fluctuations cause random deflection
+         Detector registers 0 or 1 for each bit
+         8 bits assembled into one uint8 number
+     ↓
+JSON response sent back
+     ↓
+Your code receives [174]
+     ↓
+bytes([174]) = b'\xae'  ← one quantum-random byte
+```
+
+---
+
+### The Physics Happening at ANU
+
+The device measures **quantum vacuum fluctuations** — the lowest possible energy state of the electromagnetic field is not perfectly calm. It constantly fluctuates, and those fluctuations are fundamentally random by quantum mechanics.
+```
+Laser beam
+    ↓
+Beam splitter
+    ↓          ↓
+Detector A    Detector B
+    ↓          ↓
+   "0"        "1"
+
+
+
+32 numbers come back. Each one was decided by a photon interacting with quantum vacuum in a lab in Australia a few milliseconds ago. Those 32 numbers have never existed before that moment and could not have been predicted by anyone or anything in the universe.
